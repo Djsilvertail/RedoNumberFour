@@ -13,6 +13,7 @@ const User = require('./models/user');
 
 const MONGODB_URI =
   'mongodb+srv://adminUser:Jayde2021@cluster0.v74op.mongodb.net/myFirstDatabase?retryWrites=true&w=majority';
+  const port = process.env.PORT || 5000;
 
 const app = express();
 const store = new MongoDBStore({
@@ -86,7 +87,7 @@ app.use((error, req, res, next) => {
 mongoose
   .connect(MONGODB_URI)
   .then(result => {
-    app.listen(5000);
+    app.listen(port);
   })
   .catch(err => {
     console.log(err);
