@@ -12,6 +12,7 @@ exports.getProducts = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('getProducts err - ', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -29,6 +30,7 @@ exports.getProduct = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('getProduct err - ', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -45,6 +47,7 @@ exports.getIndex = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('getIndex err - ', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -53,7 +56,7 @@ exports.getIndex = (req, res, next) => {
 
 exports.getCart = (req, res, next) => {
 
-  console.log('GET CART IS FIRING', {user: req.user, items: req.user.items, req, res});
+  console.log('GET CART IS FIRING');
   req.user
     .populate('cart.items.productId')
     .execPopulate()
@@ -78,13 +81,15 @@ exports.postCart = (req, res, next) => {
   const prodId = req.body.productId;
   Product.findById(prodId)
     .then(product => {
+      console.log('addToCart firing', product)
       return req.user.addToCart(product);
     })
     .then(result => {
-      console.log(result);
+      console.log('postCart then#2 result',{result, items: result.cart.items});
       res.redirect('/cart');
     })
     .catch(err => {
+      console.error('postCart failure! - ', {err})
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -99,6 +104,7 @@ exports.postCartDeleteProduct = (req, res, next) => {
       res.redirect('/cart');
     })
     .catch(err => {
+      console.log('postCartDeleteProduct err - ', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -129,6 +135,7 @@ exports.postOrder = (req, res, next) => {
       res.redirect('/orders');
     })
     .catch(err => {
+      console.log('postOrder err - ', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
@@ -145,6 +152,7 @@ exports.getOrders = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('getOrders err - ', err);
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
