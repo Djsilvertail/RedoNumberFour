@@ -52,11 +52,14 @@ exports.getIndex = (req, res, next) => {
 };
 
 exports.getCart = (req, res, next) => {
+
+  console.log('GET CART IS FIRING', {user: req.user, items: req.user.items, req, res});
   req.user
     .populate('cart.items.productId')
     .execPopulate()
     .then(user => {
       const products = user.cart.items;
+      console.log('get cart returns user & products', {user, products})
       res.render('shop/cart', {
         path: '/cart',
         pageTitle: 'Your Cart',
@@ -64,6 +67,7 @@ exports.getCart = (req, res, next) => {
       });
     })
     .catch(err => {
+      console.log('catch get cart - ', err)
       const error = new Error(err);
       error.httpStatusCode = 500;
       return next(error);
